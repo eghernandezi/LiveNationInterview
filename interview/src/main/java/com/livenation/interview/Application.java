@@ -10,11 +10,12 @@ import org.springframework.context.annotation.Bean;
 
 import com.livenation.interview.entity.Customer;
 import com.livenation.interview.repository.CustomerRepository;
+import com.livenation.interview.service.CustomerService;
 
 @SpringBootApplication
 public class Application {
 
-	private static final Logger log = LoggerFactory.getLogger(Application.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class);
@@ -31,27 +32,39 @@ public class Application {
 			repository.save(new Customer("Michelle", "Dessler"));
 
 			// fetch all customers
-			log.info("Customers found with findAll():");
-			log.info("-------------------------------");
+			LOGGER.info("Customers found with findAll():");
+			LOGGER.info("-------------------------------");
 			for (Customer customer : repository.findAll()) {
-				log.info(customer.toString());
+				LOGGER.info(customer.toString());
 			}
-			log.info("");
+			LOGGER.info("");
 
 			// fetch an individual customer by ID
 			Customer customer = repository.findOne(1L);
-			log.info("Customer found with findOne(1L):");
-			log.info("--------------------------------");
-			log.info(customer.toString());
-			log.info("");
+			LOGGER.info("Customer found with findOne(1L):");
+			LOGGER.info("--------------------------------");
+			LOGGER.info(customer.toString());
+			LOGGER.info("");
 
 			// fetch customers by last name
-			log.info("Customer found with findByLastName('Bauer'):");
-			log.info("--------------------------------------------");
+			LOGGER.info("Customer found with findByLastName('Bauer'):");
+			LOGGER.info("--------------------------------------------");
 			for (Customer bauer : repository.findByLastName("Bauer")) {
-				log.info(bauer.toString());
+				LOGGER.info(bauer.toString());
 			}
-			log.info("");
+			LOGGER.info("");
+		};
+	}
+	
+	@Bean
+	public CommandLineRunner demoService(CustomerService service) {
+		LOGGER.info("////// EITHNE ///////");
+		return (args) -> {
+			
+			for (Customer bauer : service.findByLastName("Bauer")) {
+				LOGGER.info(bauer.toString());
+			}
+			LOGGER.info("");
 		};
 	}
 
